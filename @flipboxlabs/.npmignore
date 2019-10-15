@@ -1,0 +1,6 @@
+# The basics
+*.ts
+*.tgz
+*.snk
+!*.d.ts
+!*.js
