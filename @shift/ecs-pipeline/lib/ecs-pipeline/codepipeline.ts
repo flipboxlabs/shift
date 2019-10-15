@@ -20,6 +20,7 @@ interface ICodePipelineStackProps extends IBaseEcsPipelineStackProps {
   codebuild: codebuild.IProject
   queueEcsService: ecs.Ec2Service
   webEcsService: ecs.Ec2Service
+  domainName: string
   distributionId?: string
   pub2SlackParams?: string[]
 }
@@ -167,6 +168,7 @@ export class CodePipelineStack extends SubStack {
        * @type {lambda.Function}
        */
       const pub2Slack = new Pub2Slack(this, `Pub2SlackFunc`, {
+        appUrl: props.domainName,
         environment,
         allowResources: resources
       })

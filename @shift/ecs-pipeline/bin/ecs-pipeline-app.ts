@@ -28,7 +28,7 @@ const envParameterPath =
   app.node.tryGetContext('envParameterPath') || `/${appName}/${envName}`
 const codecommitBranch = app.node.tryGetContext('codecommitBranch')
 const codecommitRepo = app.node.tryGetContext('codecommitRepo')
-const domainName = app.node.tryGetContext('domainName')
+// const domainName = app.node.tryGetContext('domainName')
 const domainZoneName = app.node.tryGetContext('domainZoneName')
 const domainZoneId = app.node.tryGetContext('domainZoneId')
 const instanceKeyName = app.node.tryGetContext('instanceKeyName')

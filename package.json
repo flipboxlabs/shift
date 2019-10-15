@@ -1,19 +1,15 @@
 {
     "name": "shift",
-    "version": "1.0.0",
+    "version": "0.1.0",
     "description": "Collection of patterns for AWS CDK",
-    "pkglint": {
-        "include": "dependencies/node-version"
-    },
     "scripts": {
-        "pkglint": "lerna --scope pkglint run build && lerna run pkglint",
         "build-all": "tsc -b"
     },
     "author": {
         "name": "Flipbox Digital",
         "url": "https://flipboxdigital.com"
     },
-    "license": "ISC",
+    "license": "MIT",
     "devDependencies": {
         "@types/jest": "^24.0.18",
         "@types/node": "^8.10.54",

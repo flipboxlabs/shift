@@ -1,6 +1,12 @@
 {
-  "name": "@shift/ecs-pipeline",
+  "name": "@flipboxlabs/shift-ecs-pipeline",
+  "description": "An AWS CDK library for building a deployment pipeline for ECS",
   "version": "0.1.0",
+  "author": {
+      "name": "Flipbox Digital",
+      "url": "https://flipboxdigital.com"
+  },
+  "license": "MIT",
   "scripts": {
     "build": "tsc -p ./tsconfig.json",
     "watch": "tsc -w -p ./tsconfig.json"

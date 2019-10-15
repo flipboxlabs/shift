@@ -123,6 +123,7 @@ export class EcsPipelineStack extends cdk.Stack {
       repoName: props.codecommitRepo,
       repoBranchName: props.codecommitBranch,
       env: props.env,
+      domainName: props.domainName || ecsServiceStack.loadBalancer.loadBalancerDnsName,
       pub2SlackParams: props.pub2SlackParams,
       region: this.region
     })
