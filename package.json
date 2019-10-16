@@ -3,7 +3,7 @@
     "version": "0.1.0",
     "description": "Collection of patterns for AWS CDK",
     "scripts": {
-        "build-all": "tsc -b"
+        "ecs-pipeline-install": "npm --prefix @flipboxlabs/ecs-pipeline install"
     },
     "author": {
         "name": "Flipbox Digital",
