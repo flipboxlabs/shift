@@ -38,7 +38,6 @@ export interface IMakeContainerDefinitionProps {
 }
 
 export class Ec2TaskDefinitionStack extends SubStack {
-  public rootStackName: string
   public idPrefix: string = 'Tasks'
 
   // Web - attached to service
@@ -78,6 +77,7 @@ export class Ec2TaskDefinitionStack extends SubStack {
 
     //set a default
     props.prioritizeHttps = props.prioritizeHttps || false
+    const stack = cdk.Stack.of(this);
 
     //overwrite defaults if populated
     this.cpu = props.cpu || this.cpu
@@ -85,7 +85,6 @@ export class Ec2TaskDefinitionStack extends SubStack {
 
     this.roleStack = new TaskRoleStack(this, `${this.idPrefix}TaskRole`, {
       envParameterPath: props.envParameterPath,
-      rootStackName: props.rootStackName,
       logGroup: props.logGroup,
       env: props.env,
       region: props.region
@@ -101,7 +100,7 @@ export class Ec2TaskDefinitionStack extends SubStack {
       `${this.idPrefix}WebTaskDefinition`,
       {
         role: this.roleStack.role,
-        family: `${this.idPrefix}-WebApp`
+        family: `${stack.stackName}-WebApp`
       }
     )
     this.webContainer = this.makeContainerDefinition(this, `WebContainer`, {
@@ -111,7 +110,7 @@ export class Ec2TaskDefinitionStack extends SubStack {
       essential: true,
       taskDefinition: this.webTaskDefinition,
       environment: {
-        STACK_NAME: props.rootStackName,
+        STACK_NAME: stack.stackName,
         AWS_PARAMETER_PATH: props.envParameterPath,
         AWS_DEFAULT_REGION: props.region
       },
@@ -159,7 +158,7 @@ export class Ec2TaskDefinitionStack extends SubStack {
       taskDefinition: this.queueTaskDefinition,
       essential: true,
       environment: {
-        STACK_NAME: props.rootStackName,
+        STACK_NAME: stack.stackName,
         AWS_PARAMETER_PATH: props.envParameterPath,
         AWS_DEFAULT_REGION: props.region
       },
@@ -187,7 +186,7 @@ export class Ec2TaskDefinitionStack extends SubStack {
       essential: true,
       taskDefinition: this.cronTaskDefinition,
       environment: {
-        STACK_NAME: props.rootStackName,
+        STACK_NAME: stack.stackName,
         AWS_PARAMETER_PATH: props.envParameterPath,
         AWS_DEFAULT_REGION: props.region
       },
@@ -215,7 +214,7 @@ export class Ec2TaskDefinitionStack extends SubStack {
         essential: true,
         taskDefinition: this.opsTaskDefinition,
         environment: {
-          STACK_NAME: props.rootStackName,
+          STACK_NAME: stack.stackName,
           AWS_PARAMETER_PATH: props.envParameterPath,
           AWS_DEFAULT_REGION: props.region,
           DEVOPS_BUCKET: props.devopsBucket

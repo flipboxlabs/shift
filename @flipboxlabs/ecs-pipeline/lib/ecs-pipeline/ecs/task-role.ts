@@ -8,7 +8,6 @@ export interface ITaskRoleStack extends IBaseEcsPipelineStackProps {
 
 export class TaskRoleStack extends cdk.Construct {
   public idPrefix: string = 'TaskRole'
-  public rootStackName: string
   public role: iam.Role
   public policy: iam.Policy
 

@@ -21,7 +21,6 @@ export interface IServiceStackProps {
 
 export class Ec2ServicesStack extends SubStack {
   public idPrefix: string = 'Service'
-  public rootStackName: string
 
   // parameters
   protected minWebTasks: number = 1

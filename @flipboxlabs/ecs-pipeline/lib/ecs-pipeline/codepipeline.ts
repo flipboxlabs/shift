@@ -4,7 +4,6 @@ import * as codepipeline from '@aws-cdk/aws-codepipeline'
 import * as eventTargets from '@aws-cdk/aws-events-targets'
 import * as actions from '@aws-cdk/aws-codepipeline-actions'
 import * as lambda from '@aws-cdk/aws-lambda'
-import * as iam from '@aws-cdk/aws-iam'
 import * as ecs from '@aws-cdk/aws-ecs'
 import * as s3 from '@aws-cdk/aws-s3'
 import * as cdk from '@aws-cdk/core'
@@ -38,6 +37,8 @@ export class CodePipelineStack extends SubStack {
   ) {
     super(scope, id)
 
+    const stack = cdk.Stack.of(this)
+
     const artifactBucket = s3.Bucket.fromBucketName(
       this,
       `${this.idPrefix}ArtifactBucket`,
@@ -48,7 +49,7 @@ export class CodePipelineStack extends SubStack {
       this,
       `${this.idPrefix}Pipeline`,
       {
-        pipelineName: props.rootStackName,
+        pipelineName: stack.stackName,
         artifactBucket: artifactBucket
       }
     )

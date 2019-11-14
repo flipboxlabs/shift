@@ -54,7 +54,6 @@ export class EcsPipelineStack extends cdk.Stack {
 
     const clusterStack = new ClusterStack(this, 'ClusterStack', {
       allowIngress: props.allowIngress,
-      rootStackName: this.stackName,
       logGroup: commonStack.logGroup,
       vpc: commonStack.vpc,
       keyName: props.instanceKeyName,
@@ -72,7 +71,6 @@ export class EcsPipelineStack extends cdk.Stack {
       envParameterPath: props.envParameterPath,
       logGroup: commonStack.logGroup,
       prioritizeHttps: props.certificateArns ? true : false,
-      rootStackName: this.stackName,
       env: props.env,
       opsBackupCommand: props.opsBackupCommand,
       region: this.region,
@@ -83,7 +81,6 @@ export class EcsPipelineStack extends cdk.Stack {
       certificateArns: props.certificateArns,
       cluster: clusterStack.cluster,
       logGroup: commonStack.logGroup,
-      rootStackName: this.stackName,
       queueTaskDefinition: taskDefStack.queueTaskDefinition,
       webTaskDefinition: taskDefStack.webTaskDefinition,
       vpc: commonStack.vpc,
@@ -101,7 +98,6 @@ export class EcsPipelineStack extends cdk.Stack {
     const codeBuildStack = new CodeBuildStack(this, 'CodeBuildStack', {
       envName: props.envName,
       envParameterPath: props.envParameterPath,
-      rootStackName: this.stackName,
       logGroup: commonStack.logGroup,
       repositoryUri: ecrStack.repository.repositoryUri,
       repositoryName: ecrStack.repository.repositoryName,
@@ -114,7 +110,6 @@ export class EcsPipelineStack extends cdk.Stack {
     // codepipeline
     const codepipelineStack = new CodePipelineStack(this, 'CodePipelineStack', {
       logGroup: commonStack.logGroup,
-      rootStackName: this.stackName,
       codebuild: codeBuildStack.buildProject,
       codecommit: codecommitRepo,
       s3BucketName: props.s3ArtifactBucketName,

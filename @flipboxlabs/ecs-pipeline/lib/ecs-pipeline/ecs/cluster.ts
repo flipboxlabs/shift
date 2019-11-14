@@ -5,6 +5,7 @@ import * as cloudwatch from '@aws-cdk/aws-cloudwatch'
 import * as cdk from '@aws-cdk/core'
 import { IBaseEcsPipelineStackProps, SubStack } from '../sub-stack'
 import { AllowIngress } from '../../ec2/allow-ingress'
+import { stat } from 'fs'
 
 export interface IClusterStackProps extends IBaseEcsPipelineStackProps {
   allowIngress?: AllowIngress[]
@@ -18,7 +19,6 @@ export interface IClusterStackProps extends IBaseEcsPipelineStackProps {
 }
 
 export class ClusterStack extends SubStack {
-  public rootStackName: string
 
   // parameters to pull
   protected static instanceClass: ec2.InstanceClass = ec2.InstanceClass.T3
@@ -33,14 +33,15 @@ export class ClusterStack extends SubStack {
   constructor(scope: cdk.Construct, id: string, props: IClusterStackProps) {
     super(scope, id)
 
+    const stack = cdk.Stack.of(this)
     const instanceTypeIdentifier = props.instanceType
     ClusterStack.instanceClass = props.instanceClass || ClusterStack.instanceClass
     ClusterStack.instanceSize = props.instanceSize || ClusterStack.instanceSize
     this.keyName = props.keyName || this.keyName
     this.maxCapacity = props.maxCapacity || this.maxCapacity
 
-    this.cluster = new ecs.Cluster(this, props.rootStackName, {
-      clusterName: props.rootStackName,
+    this.cluster = new ecs.Cluster(this, stack.stackName, {
+      clusterName: stack.stackName,
       vpc: props.vpc
     })
 
@@ -114,7 +115,7 @@ export class ClusterStack extends SubStack {
         metricName: 'MemoryReservation',
         statistic: 'Average',
         dimensions: {
-          ClusterName: props.rootStackName,
+          ClusterName: stack.stackName,
         }
       }),
     })
