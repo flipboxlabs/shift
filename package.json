@@ -1,6 +1,6 @@
 {
     "name": "shift",
-    "version": "0.1.0",
+    "version": "0.1.1",
     "description": "Collection of patterns for AWS CDK",
     "scripts": {
         "ecs-pipeline-install": "npm --prefix @flipboxlabs/ecs-pipeline install"
