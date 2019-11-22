@@ -79,7 +79,7 @@ export class ClusterStack extends SubStack {
       for (let i in props.allowIngress) {
         const securityGroup = ec2.SecurityGroup.fromSecurityGroupId(
           this,
-          'ImportSecurityGroup',
+          `ImportSecurityGroup-${i}`,
           props.allowIngress[i].securityGroupId
         )
 
