@@ -147,7 +147,7 @@ export class Ec2TaskDefinitionStack extends SubStack {
       `${this.idPrefix}QueueTaskDefinition`,
       {
         role: this.roleStack.role,
-        family: `${this.idPrefix}-QueueApp`
+        family: `${stack.stackName}-QueueApp`
       }
     )
 
@@ -174,7 +174,7 @@ export class Ec2TaskDefinitionStack extends SubStack {
       this,
       `${this.idPrefix}CronTaskDefinition`,
       {
-        family: `${this.idPrefix}-Cron`,
+        family: `${stack.stackName}-Cron`,
         role: this.roleStack.role
       }
     )
@@ -203,7 +203,7 @@ export class Ec2TaskDefinitionStack extends SubStack {
         this,
         `${this.idPrefix}OpsTaskDefinition`,
         {
-          family: `${this.idPrefix}-Ops`,
+          family: `${stack.stackName}-Ops`,
           role: this.roleStack.role
         }
       )
