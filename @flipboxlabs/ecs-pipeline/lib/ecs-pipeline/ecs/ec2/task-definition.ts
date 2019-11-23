@@ -90,6 +90,16 @@ export class Ec2TaskDefinitionStack extends SubStack {
       region: props.region
     })
 
+    new cdk.CfnOutput(
+      this,
+      `${stack.stackName}RoleArnOutput`,
+      {
+        exportName: `${stack.stackName}TaskRoleArn`,
+        value: this.roleStack.role.roleArn,
+        description: 'Task Role Arn'
+      }
+    )
+
     const containerImage = ecs.ContainerImage.fromRegistry(
       this.appContainerImage
     )
@@ -101,6 +111,16 @@ export class Ec2TaskDefinitionStack extends SubStack {
       {
         role: this.roleStack.role,
         family: `${stack.stackName}-WebApp`
+      }
+    )
+
+    new cdk.CfnOutput(
+      this,
+      `${stack.stackName}WebTaskArnOutput`,
+      {
+        exportName: `${stack.stackName}WebTaskArn`,
+        value: this.webTaskDefinition.taskDefinitionArn,
+        description: 'Web Task Arn'
       }
     )
     this.webContainer = this.makeContainerDefinition(this, `WebContainer`, {
@@ -150,6 +170,15 @@ export class Ec2TaskDefinitionStack extends SubStack {
         family: `${stack.stackName}-QueueApp`
       }
     )
+    new cdk.CfnOutput(
+      this,
+      `${stack.stackName}QueueTaskArnOutput`,
+      {
+        exportName: `${stack.stackName}QueueTaskArn`,
+        value: this.queueTaskDefinition.taskDefinitionArn,
+        description: 'Queue Task Arn'
+      }
+    )
 
     this.queueContainer = this.makeContainerDefinition(this, `QueueContainer`, {
       image: containerImage,
@@ -176,6 +205,15 @@ export class Ec2TaskDefinitionStack extends SubStack {
       {
         family: `${stack.stackName}-Cron`,
         role: this.roleStack.role
+      }
+    )
+    new cdk.CfnOutput(
+      this,
+      `${stack.stackName}CronTaskArnOutput`,
+      {
+        exportName: `${stack.stackName}CronTaskArn`,
+        value: this.cronTaskDefinition.taskDefinitionArn,
+        description: 'Cron Task Arn'
       }
     )
 
@@ -224,6 +262,15 @@ export class Ec2TaskDefinitionStack extends SubStack {
           logGroup: props.logGroup
         })
       })
+      new cdk.CfnOutput(
+        this,
+        `${stack.stackName}OpsTaskArnOutput`,
+        {
+          exportName: `${stack.stackName}OpsTaskArn`,
+          value: this.opsTaskDefinition.taskDefinitionArn,
+          description: 'Ops Task Arn'
+        }
+      )
       // ops event
       const rule = new events.Rule(this, `${this.idPrefix}OpsCron`, {
         schedule: events.Schedule.expression(this.opsEventsSchedule)

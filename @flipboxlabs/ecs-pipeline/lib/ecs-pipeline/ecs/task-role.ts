@@ -14,9 +14,12 @@ export class TaskRoleStack extends cdk.Construct {
   constructor(scope: cdk.Construct, id: string, props: ITaskRoleStack) {
     super(scope, id)
 
+    const stack = cdk.Stack.of(this)
+
     // Role
     this.role = new iam.Role(scope, `${this.idPrefix}Role`, {
-      assumedBy: new iam.ServicePrincipal('ecs-tasks.amazonaws.com')
+      assumedBy: new iam.ServicePrincipal('ecs-tasks.amazonaws.com'),
+      roleName: `${stack.stackName}TaskRole`
     })
 
     // Start Policy
