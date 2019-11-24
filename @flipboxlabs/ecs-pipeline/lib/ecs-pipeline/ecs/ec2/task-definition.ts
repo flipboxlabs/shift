@@ -296,10 +296,12 @@ export class Ec2TaskDefinitionStack extends SubStack {
     id: string,
     props: IMakeTaskDefinitionProps
   ): ecs.Ec2TaskDefinition {
+    const stack = cdk.Stack.of(this)
     return new ecs.Ec2TaskDefinition(scope, id, {
       family: props.family,
       taskRole: props.role,
       executionRole: new iam.Role(this, `${id}ExecutionRole`, {
+        roleName: `${stack.stackName}${id}ExecutionRole`,
         assumedBy: new iam.ServicePrincipal('ecs-tasks.amazonaws.com'),
         managedPolicies: [
           iam.ManagedPolicy.fromAwsManagedPolicyName('service-role/AmazonECSTaskExecutionRolePolicy')
