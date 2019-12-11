@@ -1,7 +1,7 @@
 {
-  "name": "@flipboxlabs/shift-ecs-pipeline",
+  "name": "@flipboxlabs/rds",
   "description": "An AWS CDK library for building a deployment pipeline for ECS",
-  "version": "0.1.10",
+  "version": "0.0.1",
   "author": {
     "name": "Flipbox Digital",
     "url": "https://flipboxdigital.com"
@@ -18,14 +18,9 @@
     "typescript": "^3.7.3"
   },
   "dependencies": {
-    "@aws-cdk/aws-cloudwatch": "^1.18.0",
-    "@aws-cdk/aws-codepipeline-actions": "^1.18.0",
     "@aws-cdk/aws-ec2": "^1.18.0",
-    "@aws-cdk/aws-ecs": "^1.18.0",
-    "@aws-cdk/aws-events": "^1.18.0",
+    "@aws-cdk/aws-rds": "^1.18.0",
     "@aws-cdk/aws-iam": "^1.18.0",
-    "@aws-cdk/aws-lambda": "^1.18.0",
-    "@aws-cdk/aws-logs": "^1.18.0",
     "@aws-cdk/core": "^1.18.0",
     "@aws-cdk/cx-api": "^1.18.0",
     "source-map-support": "^0.5.16"

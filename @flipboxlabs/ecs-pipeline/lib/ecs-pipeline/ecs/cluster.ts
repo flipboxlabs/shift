@@ -46,9 +46,9 @@ export class ClusterStack extends SubStack {
     })
 
     // todo?
-    // 1. add security groups to the instances - port 22
+    // 1. [DONE] add security groups to the instances - port 22
     // 2. spot price
-    // 3. MetricsCollection = 1Minute
+    // 3. [DONE] MetricsCollection = 1Minute
     // 4. Block Device Storage
     let instanceType: ec2.InstanceType
 
@@ -65,6 +65,13 @@ export class ClusterStack extends SubStack {
       maxCapacity: this.maxCapacity,
       instanceType
     })
+
+    const cfnAsGroup = this.ec2Autoscaling.node.defaultChild as autoscaling.CfnAutoScalingGroup
+    cfnAsGroup.metricsCollection = [
+      {
+        granularity: '1Minute' 
+      }
+    ]
 
     if (props.whiteListCIDRs) {
       for (let i in props.whiteListCIDRs) {
