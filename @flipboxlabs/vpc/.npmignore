@@ -1,0 +1,10 @@
+# The basics
+cdk.context.json
+cdk.out/*
+.env
+.env.*
+*.ts
+*.tgz
+*.snk
+!*.d.ts
+!*.js

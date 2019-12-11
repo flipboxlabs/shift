@@ -1,7 +1,7 @@
 {
   "name": "@flipboxlabs/rds",
-  "description": "An AWS CDK library for building a deployment pipeline for ECS",
-  "version": "0.0.1",
+  "description": "An AWS CDK library for building RDS Instances",
+  "version": "0.0.2",
   "author": {
     "name": "Flipbox Digital",
     "url": "https://flipboxdigital.com"
