@@ -1,7 +1,7 @@
 {
-  "name": "@flipboxlabs/rds",
+  "name": "@flipboxlabs/shift-rds",
   "description": "An AWS CDK library for building RDS Instances",
-  "version": "0.0.2",
+  "version": "0.0.4",
   "author": {
     "name": "Flipbox Digital",
     "url": "https://flipboxdigital.com"

@@ -86,6 +86,25 @@ export class AuroraMysqlStack extends cdk.Stack {
       storageEncrypted: true,
       removalPolicy: cdk.RemovalPolicy.DESTROY
     })
+    if(this.cluster.secret ) {
+      new cdk.CfnOutput(
+        this,
+        `${this.stackName}-MasterSecret`,
+        {
+          exportName: `${this.stackName}-MasterSecret-Arn`,
+          value: this.cluster.secret.secretArn
+        }
+      )
+    }
+
+    const cfnCluster = this.cluster.node.defaultChild as rds.CfnDBCluster
+    cfnCluster.associatedRoles = [
+      {
+        roleArn: rdsRole.roleArn
+      }
+    ]
+    cfnCluster.enableIamDatabaseAuthentication = true
+
 
     if (props.whiteListCIDRs) {
       props.whiteListCIDRs.forEach(cidr => {
