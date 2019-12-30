@@ -10,6 +10,8 @@ export interface IAllServicesStackProps extends IBaseEcsPipelineStackProps {
   queueTaskDefinition: ecs.Ec2TaskDefinition
   vpc: ec2.IVpc
   certificateArns?: string[]
+  minDesiredWebTasks: number
+  minDesiredQueueTasks: number
 }
 
 export interface IServiceStackProps {
@@ -17,6 +19,7 @@ export interface IServiceStackProps {
   taskDefinition: ecs.Ec2TaskDefinition
   vpc: ec2.IVpc
   certificateArns?: string[]
+  minDesiredTasks: number
 }
 
 export class Ec2ServicesStack extends SubStack {
@@ -38,17 +41,22 @@ export class Ec2ServicesStack extends SubStack {
   constructor(scope: cdk.Construct, id: string, props: IAllServicesStackProps) {
     super(scope, id)
 
+    this.minWebTasks = props.minDesiredWebTasks || this.minWebTasks
+    this.minQueueTasks = props.minDesiredQueueTasks || this.minQueueTasks
+
     this.makeWebService({
       cluster: props.cluster,
       vpc: props.vpc,
       taskDefinition: props.webTaskDefinition,
-      certificateArns: props.certificateArns
+      certificateArns: props.certificateArns,
+      minDesiredTasks: this.minWebTasks,
     })
 
     this.makeQueueService({
       cluster: props.cluster,
       vpc: props.vpc,
-      taskDefinition: props.queueTaskDefinition
+      taskDefinition: props.queueTaskDefinition,
+      minDesiredTasks: this.minQueueTasks,
     })
   }
 
@@ -58,7 +66,8 @@ export class Ec2ServicesStack extends SubStack {
       `Ec2ServiceWeb${this.idPrefix}`,
       {
         cluster: props.cluster,
-        taskDefinition: props.taskDefinition
+        taskDefinition: props.taskDefinition,
+        desiredCount: props.minDesiredTasks,
       }
     )
 
@@ -151,7 +160,7 @@ export class Ec2ServicesStack extends SubStack {
     }
 
     const scaling = this.webService.autoScaleTaskCount({
-      minCapacity: 1,
+      minCapacity: this.minWebTasks,
       maxCapacity: this.maxWebTasks
     })
 
@@ -178,7 +187,8 @@ export class Ec2ServicesStack extends SubStack {
       `Ec2ServiceQueue${this.idPrefix}`,
       {
         cluster: props.cluster,
-        taskDefinition: props.taskDefinition
+        taskDefinition: props.taskDefinition,
+        desiredCount: props.minDesiredTasks,
       }
     )
 

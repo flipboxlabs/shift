@@ -34,6 +34,8 @@ export interface IEcsPipelineStackProps extends cdk.StackProps {
   vpcId?: string
   pub2SlackParams?: string[]
   whiteListCIDRs?: string[]
+  minDesiredWebTasks?: number
+  minDesiredQueueTasks?: number
 }
 
 export class EcsPipelineStack extends cdk.Stack {
@@ -85,7 +87,9 @@ export class EcsPipelineStack extends cdk.Stack {
       webTaskDefinition: taskDefStack.webTaskDefinition,
       vpc: commonStack.vpc,
       env: props.env,
-      region: this.region
+      region: this.region,
+      minDesiredWebTasks: props.minDesiredWebTasks || 1,
+      minDesiredQueueTasks: props.minDesiredQueueTasks || 1,
     })
 
     const codecommitRepo = codecommit.Repository.fromRepositoryName(
