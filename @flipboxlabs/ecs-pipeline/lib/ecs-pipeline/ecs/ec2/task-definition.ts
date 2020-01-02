@@ -66,7 +66,7 @@ export class Ec2TaskDefinitionStack extends SubStack {
   protected memoryReservationMiB: number = 256
   protected devopsBucket: string
   protected multilinePattern: string =
-    '^(\\d\\d\\d\\d-\\d\\d-\\d\\d \\d\\d:\\d\\d:\\d\\d|\\S+:443 \\b\\d{1,3}.\\d{1,3}.\\d{1,3}.\\d{1,3}\\b)'
+    '^(\\d\\d\\d\\d-\\d\\d-\\d\\d \\d\\d:\\d\\d:\\d\\d|\\S+:\\d+ \\b\\d{1,3}.\\d{1,3}.\\d{1,3}.\\d{1,3}\\b|\\d{1,3}.\\d{1,3}.\\d{1,3}.\\d{1,3}\\b)'
 
   constructor(
     scope: cdk.Construct,
