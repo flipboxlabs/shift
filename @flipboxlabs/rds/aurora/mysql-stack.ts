@@ -8,6 +8,7 @@ export interface IAuroraMysqlStack extends cdk.StackProps {
   vpcId: string
   whiteListCIDRs?: string[]
   defaultDatabaseName?: string
+  enhancedMonitoring?: boolean
 }
 
 export class AuroraMysqlStack extends cdk.Stack {
@@ -55,6 +56,22 @@ export class AuroraMysqlStack extends cdk.Stack {
         })
       }
     })
+
+    const engine = rds.DatabaseClusterEngine.AURORA_MYSQL
+    let enhancedMonitoring = false
+    if(props.enhancedMonitoring) {
+      enhancedMonitoring = true
+    }
+   const clusterInstance = new rds.DatabaseInstance(
+     this,
+     `WriteInstance`,
+     {
+       masterUsername: 'admin',
+       enablePerformanceInsights: true,
+       engine: rds.DatabaseInstanceEngine.AURORA_MYSQL,
+     }
+   )
+
 
     this.cluster = new rds.DatabaseCluster(this, `AuroraMySQLDbCluster`, {
       engine: rds.DatabaseClusterEngine.AURORA_MYSQL,
@@ -104,6 +121,10 @@ export class AuroraMysqlStack extends cdk.Stack {
       }
     ]
     cfnCluster.enableIamDatabaseAuthentication = true
+
+    if (props.enhancedMonitoring) {
+      this.cluster.clusterEndpoint
+    }
 
 
     if (props.whiteListCIDRs) {
