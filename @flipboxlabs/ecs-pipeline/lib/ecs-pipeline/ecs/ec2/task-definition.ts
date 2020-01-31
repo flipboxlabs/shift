@@ -18,7 +18,7 @@ export interface ITaskDefinitionStackProps extends IBaseEcsPipelineStackProps {
   queueContainerImage?: string
   prioritizeHttps?: boolean
   devopsBucket: string
-  addToTaskDefRolePolicy?: iam.PolicyStatement
+  addToTaskDefRolePolicy?: iam.PolicyStatement[]
 }
 
 export interface IMakeTaskDefinitionProps {
@@ -92,8 +92,12 @@ export class Ec2TaskDefinitionStack extends SubStack {
     })
 
     if(props.addToTaskDefRolePolicy) {
-      this.roleStack.role.addToPolicy(
-        props.addToTaskDefRolePolicy
+      props.addToTaskDefRolePolicy.forEach(
+        (policyStatement: iam.PolicyStatement) => {
+          this.roleStack.role.addToPolicy(
+            policyStatement
+          )
+        }
       )
     }
 

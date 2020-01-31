@@ -37,7 +37,7 @@ export interface IEcsPipelineStackProps extends cdk.StackProps {
   whiteListCIDRs?: string[]
   minDesiredWebTasks?: number
   minDesiredQueueTasks?: number
-  addToTaskDefRolePolicy?: iam.PolicyStatement
+  addToTaskDefRolePolicy?: iam.PolicyStatement[]
 }
 
 export class EcsPipelineStack extends cdk.Stack {
@@ -78,6 +78,7 @@ export class EcsPipelineStack extends cdk.Stack {
       opsBackupCommand: props.opsBackupCommand,
       region: this.region,
       devopsBucket: props.s3ArtifactBucketName,
+      addToTaskDefRolePolicy: props.addToTaskDefRolePolicy,
     })
 
     const ecsServiceStack = new Ec2ServicesStack(this, `EcsServiceStack`, {
