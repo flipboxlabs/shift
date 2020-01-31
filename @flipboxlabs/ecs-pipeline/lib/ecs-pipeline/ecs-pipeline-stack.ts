@@ -1,4 +1,5 @@
 import * as ec2 from '@aws-cdk/aws-ec2'
+import * as iam from '@aws-cdk/aws-iam'
 import * as logs from '@aws-cdk/aws-logs'
 import * as route53 from '@aws-cdk/aws-route53'
 import * as route53Targets from '@aws-cdk/aws-route53-targets'
@@ -36,6 +37,7 @@ export interface IEcsPipelineStackProps extends cdk.StackProps {
   whiteListCIDRs?: string[]
   minDesiredWebTasks?: number
   minDesiredQueueTasks?: number
+  addToTaskDefRolePolicy?: iam.PolicyStatement
 }
 
 export class EcsPipelineStack extends cdk.Stack {
@@ -64,7 +66,6 @@ export class EcsPipelineStack extends cdk.Stack {
       whiteListCIDRs: props.whiteListCIDRs,
       region: this.region
     })
-
 
     const taskDefStack = new Ec2TaskDefinitionStack(this, `TaskDefStack`, {
       cluster: clusterStack.cluster,
