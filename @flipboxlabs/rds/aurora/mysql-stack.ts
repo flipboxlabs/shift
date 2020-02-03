@@ -8,6 +8,8 @@ export interface IAuroraMysqlStack extends cdk.StackProps {
   vpcId: string
   whiteListCIDRs?: string[]
   defaultDatabaseName?: string
+  backup?: rds.BackupProps
+  preferredMaintenanceWindow?: string
 }
 
 export class AuroraMysqlStack extends cdk.Stack {
@@ -61,6 +63,10 @@ export class AuroraMysqlStack extends cdk.Stack {
       defaultDatabaseName: props.defaultDatabaseName || 'app',
       masterUser: {
         username: `admin`
+      },
+      preferredMaintenanceWindow: props.preferredMaintenanceWindow || 'Sat:03:00-Sat:06:00',
+      backup: props.backup || {
+        retention: cdk.Duration.days(30)
       },
       instanceProps: {
         instanceType,
