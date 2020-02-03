@@ -68,7 +68,7 @@ export class Ec2ServicesStack extends SubStack {
       this,
       `Ec2ServiceWeb${this.idPrefix}`,
       {
-        serviceName: `${cdk.Stack.of(this).stackName}-WebService`,
+        // serviceName: `${cdk.Stack.of(this).stackName}-WebService`,
         cluster: props.cluster,
         taskDefinition: props.taskDefinition,
         desiredCount: props.minDesiredTasks,
@@ -83,7 +83,7 @@ export class Ec2ServicesStack extends SubStack {
       this,
       `ElbV2${this.idPrefix}`,
       {
-        loadBalancerName: cdk.Stack.of(this).stackName,
+        // loadBalancerName: cdk.Stack.of(this).stackName,
         vpc: props.vpc,
         internetFacing: true,
         idleTimeout: cdk.Duration.seconds(300),
@@ -97,7 +97,7 @@ export class Ec2ServicesStack extends SubStack {
         this,
         `ServiceAppHttpsTargetGroup`,
         {
-          targetGroupName: `${cdk.Stack.of(this).stackName}-ServiceAppHTTPS`,
+          // targetGroupName: `${cdk.Stack.of(this).stackName}`,
           vpc: props.vpc,
           protocol: elbv2.ApplicationProtocol.HTTPS,
           port: 443,
@@ -137,7 +137,7 @@ export class Ec2ServicesStack extends SubStack {
         this,
         `ServiceAppHttpTargetGroup`,
         {
-          targetGroupName: `${cdk.Stack.of(this).stackName}-ServiceAppHTTP`,
+          // targetGroupName: `${cdk.Stack.of(this).stackName}`,
           vpc: props.vpc,
           protocol: elbv2.ApplicationProtocol.HTTP,
           port: 80,
@@ -193,7 +193,7 @@ export class Ec2ServicesStack extends SubStack {
       this,
       `Ec2ServiceQueue${this.idPrefix}`,
       {
-        serviceName: `${cdk.Stack.of(this).stackName}-QueueService`,
+        // serviceName: `${cdk.Stack.of(this).stackName}-QueueService`,
         cluster: props.cluster,
         taskDefinition: props.taskDefinition,
         desiredCount: props.minDesiredTasks,
