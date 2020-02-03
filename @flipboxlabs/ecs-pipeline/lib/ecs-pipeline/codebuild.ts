@@ -25,6 +25,7 @@ export class CodeBuildStack extends SubStack {
       this,
       `${this.idPrefix}Project`,
       {
+        projectName: cdk.Stack.of(this).stackName,
         role: new iam.Role(this, `CodeBuildServicePolicy`, {
           assumedBy: new iam.ServicePrincipal('codebuild.amazonaws.com'),
           inlinePolicies: {

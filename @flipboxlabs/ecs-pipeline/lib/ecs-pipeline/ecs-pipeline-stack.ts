@@ -38,6 +38,7 @@ export interface IEcsPipelineStackProps extends cdk.StackProps {
   minDesiredWebTasks?: number
   minDesiredQueueTasks?: number
   addToTaskDefRolePolicy?: iam.PolicyStatement[]
+  stickinessCookieDuration?: cdk.Duration
 }
 
 export class EcsPipelineStack extends cdk.Stack {
@@ -92,6 +93,7 @@ export class EcsPipelineStack extends cdk.Stack {
       region: this.region,
       minDesiredWebTasks: props.minDesiredWebTasks || 1,
       minDesiredQueueTasks: props.minDesiredQueueTasks || 1,
+      stickinessCookieDuration: props.stickinessCookieDuration,
     })
 
     const codecommitRepo = codecommit.Repository.fromRepositoryName(

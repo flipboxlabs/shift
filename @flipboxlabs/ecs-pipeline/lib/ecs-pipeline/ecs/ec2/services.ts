@@ -12,6 +12,7 @@ export interface IAllServicesStackProps extends IBaseEcsPipelineStackProps {
   certificateArns?: string[]
   minDesiredWebTasks: number
   minDesiredQueueTasks: number
+  stickinessCookieDuration?: cdk.Duration
 }
 
 export interface IServiceStackProps {
@@ -20,6 +21,7 @@ export interface IServiceStackProps {
   vpc: ec2.IVpc
   certificateArns?: string[]
   minDesiredTasks: number
+  stickinessCookieDuration?: cdk.Duration
 }
 
 export class Ec2ServicesStack extends SubStack {
@@ -50,6 +52,7 @@ export class Ec2ServicesStack extends SubStack {
       taskDefinition: props.webTaskDefinition,
       certificateArns: props.certificateArns,
       minDesiredTasks: this.minWebTasks,
+      stickinessCookieDuration: props.stickinessCookieDuration,
     })
 
     this.makeQueueService({
@@ -65,6 +68,7 @@ export class Ec2ServicesStack extends SubStack {
       this,
       `Ec2ServiceWeb${this.idPrefix}`,
       {
+        serviceName: `${cdk.Stack.of(this).stackName}-WebService`,
         cluster: props.cluster,
         taskDefinition: props.taskDefinition,
         desiredCount: props.minDesiredTasks,
@@ -79,6 +83,7 @@ export class Ec2ServicesStack extends SubStack {
       this,
       `ElbV2${this.idPrefix}`,
       {
+        loadBalancerName: cdk.Stack.of(this).stackName,
         vpc: props.vpc,
         internetFacing: true,
         idleTimeout: cdk.Duration.seconds(300),
@@ -92,11 +97,12 @@ export class Ec2ServicesStack extends SubStack {
         this,
         `ServiceAppHttpsTargetGroup`,
         {
+          targetGroupName: `${cdk.Stack.of(this).stackName}-ServiceAppHTTPS`,
           vpc: props.vpc,
           protocol: elbv2.ApplicationProtocol.HTTPS,
           port: 443,
           targets: [this.webService],
-          stickinessCookieDuration: cdk.Duration.seconds(90),
+          stickinessCookieDuration: props.stickinessCookieDuration || cdk.Duration.seconds(90),
           healthCheck: {
             interval: cdk.Duration.seconds(60),
             path: '/health.html',
@@ -131,6 +137,7 @@ export class Ec2ServicesStack extends SubStack {
         this,
         `ServiceAppHttpTargetGroup`,
         {
+          targetGroupName: `${cdk.Stack.of(this).stackName}-ServiceAppHTTP`,
           vpc: props.vpc,
           protocol: elbv2.ApplicationProtocol.HTTP,
           port: 80,
@@ -186,6 +193,7 @@ export class Ec2ServicesStack extends SubStack {
       this,
       `Ec2ServiceQueue${this.idPrefix}`,
       {
+        serviceName: `${cdk.Stack.of(this).stackName}-QueueService`,
         cluster: props.cluster,
         taskDefinition: props.taskDefinition,
         desiredCount: props.minDesiredTasks,
